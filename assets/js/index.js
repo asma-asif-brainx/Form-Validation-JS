@@ -34,11 +34,19 @@ function validate() {
         return firstName.trim() !== '' && lastName.trim() !== '' && emails.trim() !== '' && age.trim() !== '';
     }
 
+    // function validateEmail(email){
+    //     const regExp = /+@+/i;
+    //     return regExp.exec(email);
+
+    // }
+
     const isFormValid = isPasswordEqual(password, confirmPassword) &&
         validatePassword(password) &&
         validateAge(age) &&
         validateContact(contact) &&
         validateRequiredFields();
+        
+        //&& validateEmail(email);
 
     document.getElementById('button').disabled = !isFormValid;
     if(isFormValid){
