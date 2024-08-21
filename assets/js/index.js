@@ -34,11 +34,9 @@ function validate() {
         return firstName.trim() !== '' && lastName.trim() !== '' && emails.trim() !== '' && age.trim() !== '';
     }
 
-    // function validateEmail(email){
-    //     const regExp = /+@+/i;
-    //     return regExp.exec(email);
-
-    // }
+    function validateEmail(email){
+        return  /[\w.+-]+@[\w.+-]+\.[a-zA-Z0-9]{2,4}(,\s*)*/ig.test(email);
+     }
 
     const isFormValid = isPasswordEqual(password, confirmPassword) &&
         validatePassword(password) &&
