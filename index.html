@@ -4,22 +4,22 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="assets/css/style.css"> 
-        <script type="text/javascript" href="assets/js/index.js"></script>
+        <script type="text/javascript" src="assets/js/index.js"></script>
         <title>form validation</title>
     </head>
 
     <body>
         <div class="main-container">
             <h1>Form Validation</h1>
-            <form id="personal-information">
+            <form id="personal-information ">
                     <label for="fname">First Name</label>        
-                    <input id="fname" type="text" name="fname">
+                    <input id="fname" type="text" name="fname" required>
                     <hr>
                     <label for="lname">Last Name</label>        
-                    <input id="lname" type="text" name="lname">
+                    <input id="lname" type="text" name="lname" required>
                     <hr>
                     <label  for="email">Email</label>
-                    <input  type="text" id="email" name="email" placeholder="user@example.com">
+                    <input  type="text" id="email" name="email" placeholder="user@example.com" required>
                     <hr>
                     <label for="password">Password</label>
                     <input  type="text" id="password" name="password" placeholder="Password">
@@ -31,9 +31,9 @@
                     <input  type="text" id="contact" name="contact" placeholder="Contact">
                     <hr>
                     <label for="age">Age</label>
-                    <input  type="text" id="age" name="age" placeholder="Age">
+                    <input  type="text" id="age" name="age" placeholder="Age" required>
 
-                    <button type="button" id="button">Submit</button>
+                    <button type="button" id="button" onclick="validate()">Submit</button>
             </form>
         </div>
     </body>
