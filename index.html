@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="assets/css/style.css"> 
-        <script type="text/javascript" src="assets/js/index.js"></script>
-        <title>form validation</title>
-    </head>
-    <body>
-        <div class="main-container">
-            <h1>Form Validation</h1>
-            <form id="personal-information ">
-                    <label for="fname">First Name</label>        
-                    <input id="fname" type="text" name="fname" required>
-                    <hr>
-                    <label for="lname">Last Name</label>        
-                    <input id="lname" type="text" name="lname" required>
-                    <hr>
-                    <label  for="email">Email</label>
-                    <input  type="text" id="email" name="email" placeholder="user@example.com" required>
-                    <hr>
-                    <label for="password">Password</label>
-                    <input  type="text" id="password" name="password" placeholder="Password">
-                    <hr>
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input  type="text" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
-                    <hr>
-                    <label for="contact">Contact Info</label>
-                    <input  type="text" id="contact" name="contact" placeholder="Contact">
-                    <hr>
-                    <label for="age">Age</label>
-                    <input  type="text" id="age" name="age" placeholder="Age" required>
-
-                    <button type="button" id="button" onclick="validate()">Submit</button>
-            </form>
-        </div>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/style.css"> 
+    <script type="text/javascript" src="assets/js/index.js" defer></script>
+    <title>Form Validation</title>
+</head>
+<body>
+    <div class="main-container">
+        <h1>Form Validation</h1>
+        <form id="personal-information">
+            <label for="fname">First Name</label>        
+            <input id="fname" type="text" name="fname" required>
+            <hr>
+            <label for="lname">Last Name</label>        
+            <input id="lname" type="text" name="lname" required>
+            <hr>
+            <label  for="email">Notification Emails</label>
+            <input  type="text" id="email" name="email" placeholder="user@example.com" required>
+            <hr>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Password">
+            <hr>
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+            <hr>
+            <label for="contact">Contact Info</label>
+            <input type="text" id="contact" name="contact" placeholder="Contact">
+            <hr>
+            <label for="age">Age</label>
+            <input type="text" id="age" name="age" placeholder="Age" required>
+            <hr>
+            <button type="submit" id="submit-button" disabled>Submit</button>
+        </form>
+    </div>
+</body>
 </html>
