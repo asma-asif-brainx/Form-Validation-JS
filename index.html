@@ -7,30 +7,37 @@
     <script type="text/javascript" src="assets/js/index.js" defer></script>
     <title>Form Validation</title>
 </head>
-<body>
+<body class="main">
     <div class="main-container">
         <h1>Form Validation</h1>
         <form id="personal-information">
-            <label for="fname">First Name</label>        
+            <label for="fname">First Name <span class="required">*</span> </label>        
             <input id="fname" type="text" name="fname" required>
+            <span class="first-name-error"></span>
             <hr>
-            <label for="lname">Last Name</label>        
+            <label for="lname">Last Name <span class="required">*</span> </label>        
             <input id="lname" type="text" name="lname" required>
+            <span class="last-name-error"></span>
             <hr>
-            <label  for="email">Notification Emails</label>
+            <label  for="email">Notification Emails <span class="required">*</span></label>
             <input  type="text" id="email" name="email" placeholder="user@example.com" required>
+            <span class="email-error"></span>
             <hr>
             <label for="password">Password</label>
             <input type="password" id="password" name="password" placeholder="Password">
+            <span class="password-error"></span>
             <hr>
             <label for="confirmPassword">Confirm Password</label>
             <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+            <span class="confirm-password-error"></span>
             <hr>
             <label for="contact">Contact Info</label>
             <input type="text" id="contact" name="contact" placeholder="Contact">
+            <span class="contact-error"></span>
             <hr>
-            <label for="age">Age</label>
+            <label for="age">Age <span class="required">*</span></label>
             <input type="text" id="age" name="age" placeholder="Age" required>
+            <span class="age-error"></span>
             <hr>
             <button type="submit" id="submit-button" disabled>Submit</button>
         </form>
