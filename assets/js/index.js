@@ -1,122 +1,106 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('personal-information');
     const submitButton = document.getElementById('submit-button');
 
     const errorMessages = {
         requiredField: "This field is required",
         emails: "Please enter valid email addresses.",
+        emailDuplicate: "Duplicate emails not allowed.",
         password: "Password must be at least 8 characters long, with both upper and lower case letters, and a number.",
         confirmPassword: "Passwords do not match.",
-        contact: "Contact number must be 11 digits.",
+        contact: "Contact number must be 11 digits or 12 digits with a leading plus sign (+).",
         age: "Age must be between 18 and 151.",
-        ageNegative:"Age is negative"
+        ageNegative: "Invalid age number; age cannot be negative.",
+        name: "Name must only contain letters (a-z, A-Z)."
     };
 
-    function isPasswordEqual(password, confirmPassword) {
-        return password === confirmPassword;
-    }
+    const validateName = value => /^[a-zA-Z]+$/.test(value);
 
-    function validatePassword(password) {
+    const validatePassword = value => {
         const minLength = 8;
-        const hasUpperCase = /[A-Z]/.test(password);
-        const hasLowerCase = /[a-z]/.test(password);
-        const hasNumber = /\d/.test(password);
-        return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumber;
-    }
+        const hasUpperCase = /[A-Z]/.test(value);
+        const hasLowerCase = /[a-z]/.test(value);
+        const hasNumber = /\d/.test(value);
+        return value.length >= minLength && hasUpperCase && hasLowerCase && hasNumber;
+    };
 
-    function validateAge(age) {
-        const ageValue = parseInt(age, 10);
-        return ageValue >= 18 && ageValue <= 151;
-    }
+    const validateConfirmPassword = (password, confirmPassword) => password === confirmPassword;
 
-    function ageInvalid(age) {
-        const ageValue = parseInt(age, 10);
-        return ageValue > 0 ;
-    }
+    const validateAge = value => {
+        const ageValue = parseInt(value, 10);
+        return ageValue >= 18 && ageValue <= 151 && ageValue >= 0;
+    };
 
-    function validateContact(contact) {
-        return /^\d{11}$/.test(contact);
-    }
+    const validateContact = value => {
+        const contactPattern = /^\+?\d{11,12}$/;
+        return contactPattern.test(value) && (value.startsWith('+') ? value.length === 12 : value.length === 11);
+    };
 
-    function validateEmails(emails) {
-        const emailList = emails.split(',').map(email => email.trim());
-        const emailPattern = /^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]+$/;
-        return emailList.every(email => emailPattern.test(email));
-    }
+    const validateEmails = value => {
+        const emailList = value.split(',').map(email => email.trim());
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const uniqueEmails = new Set(emailList);
+        const hasDuplicates = emailList.length !== uniqueEmails.size;
+        const allEmailsValid = emailList.every(email => emailPattern.test(email));
+        return { hasDuplicates, allEmailsValid };
+    };
 
-    function showErrorMessage(input, message) {
+    const validators = {
+        fname: value => validateName(value) ? '' : errorMessages.name,
+        lname: value => validateName(value) ? '' : errorMessages.name,
+        email: value => {
+            const { hasDuplicates, allEmailsValid } = validateEmails(value);
+            if (hasDuplicates) return errorMessages.emailDuplicate;
+            if (!allEmailsValid) return errorMessages.emails;
+            return '';
+        },
+        password: value => validatePassword(value) ? '' : errorMessages.password,
+        confirmPassword: value => {
+            const passwordValue = document.getElementById('password').value;
+            return validateConfirmPassword(passwordValue, value) ? '' : errorMessages.confirmPassword;
+        },
+        contact: value => validateContact(value) ? '' : errorMessages.contact,
+        age: value => {
+            const ageValue = parseInt(value, 10);
+            return ageValue < 0 ? errorMessages.ageNegative : (validateAge(value) ? '' : errorMessages.age);
+        }
+    };
+
+    const showErrorMessage = (input, message) => {
         const errorSpan = input.nextElementSibling;
-        errorSpan.innerText = message;
-    }
+        if (errorSpan && errorSpan.tagName === 'SPAN') {
+            errorSpan.innerText = message;
+        }
+    };
 
-    function clearErrorMessage(input) {
+    const clearErrorMessage = input => {
         const errorSpan = input.nextElementSibling;
-        errorSpan.innerText = '';
-    }
+        if (errorSpan && errorSpan.tagName === 'SPAN') {
+            errorSpan.innerText = '';
+        }
+    };
 
-    function validateField(event) {
+    const validateField = event => {
         const input = event.target;
         const value = input.value.trim();
         const id = input.id;
 
-        switch (id) {
-            case 'fname':
-            case 'lname':
-                if (value === '') {
-                    showErrorMessage(input, errorMessages.requiredField);
-                } else {
-                    clearErrorMessage(input);
-                }
-                break;
-            case 'email':
-                if (!validateEmails(value)) {
-                    showErrorMessage(input, errorMessages.emails);
-                } else {
-                    clearErrorMessage(input);
-                }
-                break;
-            case 'password':
-                if (!validatePassword(value)) {
-                    showErrorMessage(input, errorMessages.password);
-                } else {
-                    clearErrorMessage(input);
-                }
-                break;
-            case 'confirmPassword':
-                const passwordValue = document.getElementById('password').value;
-                if (!isPasswordEqual(passwordValue, value)) {
-                    showErrorMessage(input, errorMessages.confirmPassword);
-                } else {
-                    clearErrorMessage(input);
-                }
-                break;
-            case 'contact':
-                if (!validateContact(value)) {
-                    showErrorMessage(input, errorMessages.contact);
-                } else {
-                    clearErrorMessage(input);
-                }
-                break;
-            case 'age':
-                if (!validateAge(value)) {
-                    showErrorMessage(input, errorMessages.age);
-                } else {
-                    clearErrorMessage(input);
-                }
-                break;
-            case 'ageNegative':
-                if (ageInvalid(value)) {
-                    showErrorMessage(input, errorMessages.ageNegative);
-                } else {
-                    clearErrorMessage(input);
-                }
-                break;
+        if (requiredFields.includes(id) && value === '') {
+            showErrorMessage(input, errorMessages.requiredField);
+            return;
+        }
+
+        const errorMessage = validators[id] ? validators[id](value) : '';
+        if (errorMessage) {
+            showErrorMessage(input, errorMessage);
+        } else {
+            clearErrorMessage(input);
         }
 
         validateForm();
-    }
+    };
 
-    function validateForm() {
+    const validateForm = () => {
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
         const age = document.getElementById('age').value;
@@ -125,26 +109,32 @@ document.addEventListener('DOMContentLoaded', function () {
         const lastName = document.getElementById('lname').value;
         const emails = document.getElementById('email').value;
 
-        const isFormValid = isPasswordEqual(password, confirmPassword) &&
+        const { hasDuplicates, allEmailsValid } = validateEmails(emails);
+
+        const isFormValid = validateConfirmPassword(password, confirmPassword) &&
             validatePassword(password) &&
-            validateAge(age) && ageInvalid(age)
+            validateAge(age) &&
             validateContact(contact) &&
-            firstName.trim() !== '' && lastName.trim() !== '' &&
-            validateEmails(emails);
+            validateName(firstName) &&
+            validateName(lastName) &&
+            !hasDuplicates &&
+            allEmailsValid;
 
         submitButton.disabled = !isFormValid;
-    }
+    };
 
+    const requiredFields = ['fname', 'lname', 'age', 'email'];
     const inputFields = form.querySelectorAll('input');
     inputFields.forEach(input => {
-        input.addEventListener('focus', function () {
-            clearErrorMessage(input); 
-        });
-        input.addEventListener('blur', validateField); 
+        input.addEventListener('focus', () => clearErrorMessage(input));
+        input.addEventListener('blur', validateField);
     });
 
-    form.addEventListener('submit', function (event) {
-        if (!submitButton.disabled) {
+    form.addEventListener('submit', event => {
+        if (submitButton.disabled) {
+            event.preventDefault();
+            alert("Please correct the errors in the form.");
+        } else {
             alert("Form validated successfully!");
         }
     });
